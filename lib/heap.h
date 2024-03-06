@@ -15,9 +15,11 @@ struct heap {
   size_t size;
 };
 
-void heapify(struct heap *res, compare_fn_t comp_fn, size_t idx);
+int heapify(struct heap *res, compare_fn_t comp_fn, size_t idx);
 void make_heap(struct heap *res, compare_fn_t comp_fn);
 #define heap_max(h) (h->len ? h->data : NULL)
 void *heap_extract_max(struct heap *res, compare_fn_t comp_fn);
+void heap_change_value(struct heap *res, compare_fn_t comp_fn, size_t idx, void *value);
+void heap_insert_value(struct heap *res, compare_fn_t comp_fn, void *value);
 
 #endif

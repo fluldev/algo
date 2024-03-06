@@ -1,4 +1,4 @@
-TESTS=test_sort
+TESTS=test_heap test_sort
 CFLAGS= -O2 -Wall -Wextra
 LIBS=
 
@@ -10,6 +10,9 @@ test: $(TESTS)
 	@for test in $(TESTS); do\
 		./$$test;\
 	done
+
+test_heap: test_heap.c heap.o
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 test_sort: test_sort.c sort.o heap.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)

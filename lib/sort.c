@@ -29,10 +29,10 @@ int test_sort_algo(sort_fn_t algo, size_t input_size, const char *algo_name)
 
   int res;
   if(memcmp(arr, arr2, input_size*sizeof(*arr)) == 0) {
-    printf("%s\t\t"GREEN_TEXT"PASSED"RESET_TEXT".\n", algo_name);
+    printf("%s\t\t\t\t"GREEN_TEXT"PASSED"RESET_TEXT".\n", algo_name);
     res = 0;
   } else {
-    printf("%s\t\t"RED_TEXT"FAILED"RESET_TEXT".\n", algo_name);
+    printf("%s\t\t\t\t"RED_TEXT"FAILED"RESET_TEXT".\n", algo_name);
     res = 1;
   }
 
