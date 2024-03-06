@@ -11,9 +11,9 @@ test: $(TESTS)
 		./$$test;\
 	done
 
-test_heap: test_heap.c heap.o
+test_heap: test_heap.c heap.o basics.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
-test_sort: test_sort.c sort.o heap.o
+test_sort: test_sort.c sort.o heap.o basics.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 

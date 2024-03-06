@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <stdio.h>
 
+#include "basics.h"
 #include "sort.h"
 #include "heap.h"
 
@@ -29,12 +30,11 @@ int test_sort_algo(sort_fn_t algo, size_t input_size, const char *algo_name)
 
   int res;
   if(memcmp(arr, arr2, input_size*sizeof(*arr)) == 0) {
-    printf("%s\t\t\t\t"GREEN_TEXT"PASSED"RESET_TEXT".\n", algo_name);
-    res = 0;
-  } else {
-    printf("%s\t\t\t\t"RED_TEXT"FAILED"RESET_TEXT".\n", algo_name);
     res = 1;
+  } else {
+    res = 0;
   }
+  pr_test(algo_name, res);
 
   free(arr);
   free(arr2);
@@ -116,4 +116,23 @@ void heap_sort(void *a, size_t len, size_t stride, compare_fn_t comp_fn)
   while(h.len > 1) {
     heap_extract_max(&h, comp_fn);
   }
+}
+
+
+void quick_sort(void *a, size_t len, size_t stride, compare_fn_t comp_fn)
+{
+  if(len <= 1)
+    return;
+  size_t pivot = partition(a, len, stride, comp_fn);
+  quick_sort(a, pivot, stride, comp_fn);
+  quick_sort(generic_at(a, pivot+1), len-pivot-1, stride, comp_fn);
+}
+
+void rand_quick_sort(void *a, size_t len, size_t stride, compare_fn_t comp_fn)
+{
+  if(len <= 1)
+    return;
+  size_t pivot = rand_partition(a, len, stride, comp_fn);
+  rand_quick_sort(a, pivot, stride, comp_fn);
+  rand_quick_sort(generic_at(a, pivot+1), len-pivot-1, stride, comp_fn);
 }

@@ -5,10 +5,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdint.h>
-
-#define RED_TEXT "\033[91m"
-#define GREEN_TEXT "\033[92m"
-#define RESET_TEXT "\033[0m"
+#include <stdio.h>
 
 #define MAX_KEYSIZE 50
 
@@ -22,5 +19,11 @@
 
 typedef int compare_fn_t(const void *a, const void *b);
 typedef void sort_fn_t(void *a, size_t len, size_t stride, compare_fn_t comp_fn);
+
+void pr_sect(const char *secname);
+void pr_test(const char *testname, int passed);
+
+size_t partition(void *a, size_t len, size_t stride, compare_fn_t comp_fn);
+size_t rand_partition(void *a, size_t len, size_t stride, compare_fn_t comp_fn);
 
 #endif

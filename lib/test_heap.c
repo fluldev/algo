@@ -19,7 +19,7 @@ int main(void)
 	}; 
 	int failed = 0;
 
- 	printf("---------------------------- Heap algorithm tests ---------------------------\n");
+  pr_sect("Heap algorithm tests");
 
 	for(long i = 0; i<arrlen; ++i)
 		arr[i] = i;
@@ -31,7 +31,7 @@ int main(void)
 		}
 	if(heap_extract_max(&h, _test_comp) != NULL)
 		failed = 1;
-	printf("make_heap & heap_extract_max test\t\t\t\t%s\n", failed?RED_TEXT"FAILED"RESET_TEXT:GREEN_TEXT"PASSED"RESET_TEXT);
+	pr_test("make_heap & heap_extract_max", !failed);
 	if(failed)
 		return 0;
 
@@ -45,7 +45,7 @@ int main(void)
 	if(heap_extract_max(&h, _test_comp) != NULL)
 		failed = 1;
 
-	printf("heap_insert_value test\t\t\t\t%s\n", failed?RED_TEXT"FAILED"RESET_TEXT:GREEN_TEXT"PASSED"RESET_TEXT);
+	pr_test("heap_insert_value", !failed);
 	if(failed)
 		return 0;
 
@@ -58,7 +58,7 @@ int main(void)
 	heap_change_value(&h, _test_comp, h.len-1, &new_value);
 	if(*(long*)h.data != 50)
 		failed = 1;
-	printf("heap_change_value larger test\t\t\t\t%s\n", failed?RED_TEXT"FAILED"RESET_TEXT:GREEN_TEXT"PASSED"RESET_TEXT);
+	pr_test("heap_change_value larger", !failed);
 	if(failed)
 		return 0;
 	
@@ -68,7 +68,7 @@ int main(void)
 	
 	if(*(long*)h.data != -50)
 		failed = 1;	
-	printf("heap_change_value smaller test\t\t\t\t%s\n", failed?RED_TEXT"FAILED"RESET_TEXT:GREEN_TEXT"PASSED"RESET_TEXT);
+	pr_test("heap_change_value smaller", !failed);
 	if(failed)
 		return 0;
 
