@@ -6,41 +6,6 @@
 #include "sort.h"
 #include "heap.h"
 
-static int _test_comp(const void *a, const void *b) {
-  return *(long*) a - *(long*)b;
-}
-int test_sort_algo(sort_fn_t algo, size_t input_size, const char *algo_name)
-{
-  FILE *f;
-  int seed;
-  assert((f = fopen("/dev/urandom", "r")) != NULL && "Cannot open /dev/urandom.");
-  assert((fread(&seed, sizeof(seed), 1, f) == 1) && "Cannot read from /dev/urandom.");
-  fclose(f);
-  srand(seed);
-
-  long *arr = malloc(input_size * sizeof(*arr));
-  long *arr2 = malloc(input_size * sizeof(*arr));
-  for(size_t i = 0; i<input_size; ++i) {
-    arr[i] = rand();
-  }
-  memcpy(arr2, arr, sizeof(*arr) * input_size);
-
-  algo(arr, input_size, sizeof(*arr), _test_comp);
-  qsort(arr2, input_size, sizeof(*arr2), _test_comp);
-
-  int res;
-  if(memcmp(arr, arr2, input_size*sizeof(*arr)) == 0) {
-    res = 1;
-  } else {
-    res = 0;
-  }
-  pr_test(algo_name, res);
-
-  free(arr);
-  free(arr2);
-  return res;
-}
-
 /* 
  * Simple in place O(n^2) sorting algorithm.
  * Can be imagined like sorting a deck of cards, 
@@ -128,6 +93,7 @@ void quick_sort(void *a, size_t len, size_t stride, compare_fn_t comp_fn)
   quick_sort(generic_at(a, pivot+1), len-pivot-1, stride, comp_fn);
 }
 
+
 void rand_quick_sort(void *a, size_t len, size_t stride, compare_fn_t comp_fn)
 {
   if(len <= 1)
@@ -135,4 +101,36 @@ void rand_quick_sort(void *a, size_t len, size_t stride, compare_fn_t comp_fn)
   size_t pivot = rand_partition(a, len, stride, comp_fn);
   rand_quick_sort(a, pivot, stride, comp_fn);
   rand_quick_sort(generic_at(a, pivot+1), len-pivot-1, stride, comp_fn);
+}
+
+
+/* Linear time sorting algorithms. */
+
+
+void counting_sort(void *a, size_t len, size_t stride, to_idx_fn_t to_idx)
+{
+  size_t *cnts = malloc(sizeof(*cnts) * len);
+  size_t *b = malloc(sizeof(*b) * len);
+  size_t *tmp = malloc(stride * len);
+  memcpy(tmp, a, len*stride);
+
+  for(size_t i = 0; i<len; ++i)
+    cnts[i] = 0;
+
+  for(size_t i = 0; i<len; ++i) {
+    b[i] = to_idx(generic_at(a, i));
+    cnts[b[i]] += 1;
+  }
+
+  for(size_t i = 1; i<len; ++i)
+    cnts[i] += cnts[i-1];
+  
+  for(size_t i = 0; i<len; ++i) {
+    --cnts[b[i]];
+    generic_assign(generic_at(a, cnts[b[i]]), &tmp[i]);
+  }
+
+  free(cnts);
+  free(b);
+  free(tmp);
 }

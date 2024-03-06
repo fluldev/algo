@@ -71,3 +71,11 @@ size_t rand_partition(void *a, size_t len, size_t stride, compare_fn_t comp_fn)
   generic_xchg(generic_at(a, len-1), generic_at(a, pivot));
   return partition(a, len, stride, comp_fn);
 }
+
+void random_permutation(void *a, size_t len, size_t stride)
+{
+  for(size_t i = 0; i<len; ++i) {
+    size_t xchg_i = i + (rand() % (len-i));
+    generic_xchg(generic_at(a, xchg_i), generic_at(a, i));
+  }
+}
