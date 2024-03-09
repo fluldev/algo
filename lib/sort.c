@@ -134,3 +134,41 @@ void counting_sort(void *a, size_t len, size_t stride, to_idx_fn_t to_idx)
   free(b);
   free(tmp);
 }
+
+
+/* This is a version of bucket sort modified by me, that does not use 
+ * linked lists (as in the book) and might be faster therefore.
+ * Obviously there is heavy inspiration from counting sort. */
+void bucket_sort_mine(void *a, size_t len, size_t stride, to_uni_dist_fn_t to_uni_dist, compare_fn_t comp_fn)
+{
+  size_t *offs = malloc(sizeof(*offs) * len); 
+  void *tmp = malloc(stride * len);
+
+  memcpy(tmp, a, len*stride);
+
+  for(size_t i = 0; i<len; ++i)
+    offs[i] = 0;
+  
+  for(size_t i = 0; i<len; ++i) {
+    double value = to_uni_dist(generic_at(a, i));
+    offs[(size_t) (len*value)] += 1;
+  }
+  
+  for(size_t i = 1; i<len; ++i) {
+    offs[i] += offs[i-1];
+  }
+
+  for(size_t i = 0; i<len; ++i) {
+    void *elem = generic_at(tmp, i);
+    size_t idx = (size_t)(len*to_uni_dist(elem));
+    --offs[idx];
+    generic_assign(generic_at(a, offs[idx]), elem);
+  }
+
+  for(size_t i = 0; i<len-1; ++i)
+    insertion_sort(generic_at(a, offs[i]), offs[i+1]-offs[i], stride, comp_fn);
+  insertion_sort(generic_at(a, offs[len-1]), len-offs[len-1], stride, comp_fn);
+  
+  free(offs);
+  free(tmp);
+}

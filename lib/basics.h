@@ -20,6 +20,7 @@
 typedef int compare_fn_t(const void *a, const void *b);
 typedef void sort_fn_t(void *a, size_t len, size_t stride, compare_fn_t comp_fn);
 typedef size_t to_idx_fn_t(void *ele);
+typedef double to_uni_dist_fn_t(void *ele);
 
 void pr_sect(const char *secname);
 void pr_test(const char *testname, int passed);

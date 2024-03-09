@@ -12,5 +12,7 @@ void quick_sort(void *a, size_t len, size_t stride, compare_fn_t comp_fn);
 void rand_quick_sort(void *a, size_t len, size_t stride, compare_fn_t comp_fn);
 
 void counting_sort(void *a, size_t len, size_t stride, to_idx_fn_t to_idx);
+void bucket_sort(void *a, size_t len, size_t stride, to_uni_dist_fn_t to_uni_dist);
+void bucket_sort_mine(void *a, size_t len, size_t stride, to_uni_dist_fn_t to_uni_dist, compare_fn_t comp_fn);
 
 #endif

@@ -1,9 +1,10 @@
-TESTS=test_heap test_sort
-CFLAGS= -O2 -Wall -Wextra
+SECTIONS=basics sort heap order_stat
+
+CFLAGS=-O2 -Wall -Wextra
 LIBS=
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $^
+TESTS=$(foreach sect,$(SECTIONS),test_$(sect))
+OBJS=$(foreach sect,$(SECTIONS),$(sect).o)
 
 default: test
 test: $(TESTS)
@@ -11,9 +12,11 @@ test: $(TESTS)
 		./$$test;\
 	done
 
-test_heap: test_heap.c heap.o basics.o
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $^
+
+test_%: test_%.c $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
-test_sort: test_sort.c sort.o heap.o basics.o
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+test_basics: 
 
