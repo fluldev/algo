@@ -20,3 +20,5 @@ test_%: test_%.c $(OBJS)
 
 test_basics: 
 
+clean:
+	rm -f $(TESTS)
